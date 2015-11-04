@@ -15,7 +15,8 @@ var ReFrame = function ReFrame(initialDb) {
 
   return {
     bus: bus,
-    dispatcher: dispatcher
+    dispatcher: dispatcher,
+    db: db
   };
 };
 
