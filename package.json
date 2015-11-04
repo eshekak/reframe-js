@@ -10,6 +10,7 @@
   "author": "Karol Majta <karol.majta@sigmapoint.pl>, Karol Manijak <karol.manijak@sigmapoint.pl>",
   "license": "ISC",
   "dependencies": {
+    "babel-polyfill": "^6.0.16",
     "immstruct": "^2.0.0",
     "js-csp": "git+https://github.com/Sigmapoint/js-csp.git"
   },

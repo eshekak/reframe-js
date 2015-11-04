@@ -1,5 +1,6 @@
 'use strict';
 
+require('babel-polyfill');
 var immstruct = require('immstruct');
 
 var Bus = require('./Bus.js');
