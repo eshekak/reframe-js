@@ -1,0 +1,20 @@
+{
+  "name": "reframe-js",
+  "version": "1.0.0",
+  "repository": "https://github.com/sigmapoint/re-frame",
+  "description": "Re-Frame reference implementation for js (lacks materialised views)",
+  "main": "dist/index.js",
+  "scripts": {
+    "babel": "./node_modules/.bin/babel lib --out-dir dist"
+  },
+  "author": "Karol Majta <karol.majta@sigmapoint.pl>, Karol Manijak <karol.manijak@sigmapoint.pl>",
+  "license": "ISC",
+  "dependencies": {
+    "js-csp": "^0.5.0"
+  },
+  "devDependencies": {
+    "babel": "^6.0.15",
+    "babel-cli": "^6.1.1",
+    "babel-preset-es2015": "^6.0.15"
+  }
+}
