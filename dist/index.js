@@ -1,5 +1,6 @@
 'use strict';
 
+require('babel-core/register')({ ignore: false });
 var immstruct = require('immstruct');
 
 var Bus = require('./Bus.js');
