@@ -6,11 +6,11 @@ var QueryPool = function QueryPool() {
   var pool = I.Map();
 
   return {
-    has: function (key) {
+    has: function has(key) {
       var immKey = I.fromJS(key);
       return pool.has(immKey);
     },
-    get: function (key) {
+    get: function get(key) {
       var immKey = I.fromJS(key);
       if (!pool.has(immKey)) {
         throw new Error();
@@ -22,7 +22,9 @@ var QueryPool = function QueryPool() {
       var immKey = I.fromJS(key);
       pool = pool.set(immKey, q);
     },
-    report: function () { return pool }
+    report: function report() {
+      return pool;
+    }
   };
 };
 

@@ -1,15 +1,16 @@
+'use strict';
+
 var ReactiveQuery = require('./ReactiveQuery');
 var QueryPool = require('./QueryPool');
 
-
-var QueryCache = function () {
+var QueryCache = function QueryCache() {
   var pool = QueryPool();
   var queryDescriptionFns = {};
   var db;
 
-  var registerQuery = function (key, queryDescriptionFn) {
+  var registerQuery = function registerQuery(key, queryDescriptionFn) {
     if (queryDescriptionFns[key]) {
-      throw new Error('Query `'+key+'` is already registered.');
+      throw new Error('Query `' + key + '` is already registered.');
     } else {
       queryDescriptionFns[key] = queryDescriptionFn;
     }
@@ -41,9 +42,10 @@ var QueryCache = function () {
   return {
     registerQuery: registerQuery,
     query: query,
-    setDb: function (initial) { db = initial; }
-  }
+    setDb: function setDb(initial) {
+      db = initial;
+    }
+  };
 };
-
 
 module.exports = QueryCache;
