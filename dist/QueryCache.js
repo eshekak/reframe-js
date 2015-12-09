@@ -1,10 +1,8 @@
 'use strict';
 
 var ReactiveQuery = require('./ReactiveQuery');
-var QueryPool = require('./QueryPool');
 
-var QueryCache = function QueryCache() {
-  var pool = QueryPool();
+var QueryCache = function QueryCache(pool) {
   var queryDescriptionFns = {};
   var db;
 
@@ -17,6 +15,7 @@ var QueryCache = function QueryCache() {
   };
 
   var query = function query(args) {
+    var q;
     args = Array.prototype.slice.apply(args, [0, args.length]);
     var key = args[0];
     if (key == '*db*') {
@@ -24,14 +23,17 @@ var QueryCache = function QueryCache() {
     } else if (queryDescriptionFns[key]) {
       var fnArgs = args.slice(1, args.length);
       if (pool.has(args)) {
-        return pool.get(args);
+        q = pool.get(args);
+        q.retain(pool);
+        return q;
       } else {
         var queryDescription = queryDescriptionFns[key].apply(null, fnArgs);
         var depsDescriptions = queryDescription.slice(0, queryDescription.length - 1);
         var transformFn = queryDescription[queryDescription.length - 1];
         var deps = depsDescriptions.map(query);
-        var q = ReactiveQuery(args, deps, transformFn);
+        q = ReactiveQuery(args, deps, transformFn);
         pool.put(args, q);
+        q.retain(pool);
         return q;
       }
     } else {

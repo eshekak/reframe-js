@@ -1,5 +1,6 @@
 'use strict';
 
+var I = require('immutable');
 var React = require('react');
 
 var queryMixin = {

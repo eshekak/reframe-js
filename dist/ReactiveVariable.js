@@ -22,7 +22,8 @@ var ReactiveVariable = function ReactiveVariable(_struct, onAnimationFrame) {
     },
     set: function set(val) {
       _struct.cursor().set(val);
-    }
+    },
+    retain: function retain(pool) {}
   };
 };
 

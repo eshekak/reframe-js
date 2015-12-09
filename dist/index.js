@@ -6,6 +6,7 @@ var csp = require('js-csp');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var logging = require('./logging');
 var components = require('./components');
 var Bus = require('./Bus.js');
 var Dispatcher = require('./Dispatcher.js');
@@ -33,7 +34,8 @@ var RootComponent = React.createClass({
 var ReFrame = function ReFrame() {
   var dbChan = csp.chan();
   var dispatcher = Dispatcher();
-  var queryCache = QueryCache();
+  var pool = QueryPool();
+  var queryCache = QueryCache(pool);
 
   return {
     render: function render(data, Component, props, element) {
@@ -49,7 +51,9 @@ var ReFrame = function ReFrame() {
           app: Component,
           appProps: props
         });
-        ReactDOM.render(rootElement, element);
+        ReactDOM.render(rootElement, element, function () {
+          pool.flush();
+        });
       };
 
       var db = ReactiveVariable(struct, doRender);
@@ -70,6 +74,9 @@ var ReFrame = function ReFrame() {
 
 ReFrame.component = function () {
   return components.Component.apply(null, arguments);
+};
+ReFrame.setLogger = function (f) {
+  logging.setLogger(f);
 };
 
 module.exports = ReFrame;
