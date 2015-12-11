@@ -431,42 +431,32 @@ var ReFrame = require('../../../dist/index');
 var App = ReFrame.component({}, function (props, query, bus) {
     return (
         React.createElement("div", null, 
-            React.createElement(ContinentsList, null), 
+            React.createElement(ContinentList, null), 
             React.createElement("hr", null), 
-            React.createElement(CountriesList, null), 
+            React.createElement(CountryList, null), 
             React.createElement("hr", null), 
-            React.createElement(CitiesList, null), 
+            React.createElement(CityList, null), 
             React.createElement("hr", null), 
             React.createElement(CityDescription, null)
         )
     );
 });
 
-var ContinentsList = ReFrame.component({}, function (props, query, bus) {
+var ContinentList = ReFrame.component({}, function (props, query, bus) {
     var selected = query(['selected']);
     var selectedContinent = selected.get('continent');
     var continents = query(['continent-list']);
     return (
         React.createElement("div", null, 
             "Continents:", 
-            React.createElement("ul", null, 
-                continents.map(function (continent) {
-                    return (
-                        React.createElement("li", {key: continent.get('id')}, 
-                            React.createElement("a", {href: true, 
-                               className: continent.equals(selectedContinent) ? "active" : "inactive", 
-                               onClick: function (e) { bus.put(['select-continent', continent]); e.preventDefault(); }}, 
-                                continent.get('name')
-                            )
-                        )
-                    );
-                })
-            )
+            React.createElement(ItemsList, {items: continents, 
+                       selectedItem: selectedContinent, 
+                       onSelect: function (continent) { bus.put(['select-continent', continent]); }})
         )
     );
 });
 
-var CountriesList = ReFrame.component({}, function (props, query, bus) {
+var CountryList = ReFrame.component({}, function (props, query, bus) {
     var selected = query(['selected']);
     var selectedContinent = selected.get('continent');
     var selectedCountry = selected.get('country');
@@ -474,24 +464,14 @@ var CountriesList = ReFrame.component({}, function (props, query, bus) {
     return (
         React.createElement("div", null, 
             "Countries in: ", selectedContinent ? selectedContinent.get('name') : '-----', 
-            React.createElement("ul", null, 
-                countries.map(function (country) {
-                    return (
-                        React.createElement("li", {key: country.get('id')}, 
-                            React.createElement("a", {href: true, 
-                               className: country.equals(selectedCountry) ? "active" : "inactive", 
-                               onClick: function (e) { bus.put(['select-country', country]); e.preventDefault(); }}, 
-                                country.get('name')
-                            )
-                        )
-                    );
-                })
-            )
+            React.createElement(ItemsList, {items: countries, 
+                       selectedItem: selectedCountry, 
+                       onSelect: function (country) { bus.put(['select-country', country]); }})
         )
     )
 });
 
-var CitiesList = ReFrame.component({}, function (props, query, bus) {
+var CityList = ReFrame.component({}, function (props, query, bus) {
     var selected = query(['selected']);
     var selectedCountry = selected.get('country');
     var selectedCity = selected.get('city');
@@ -499,22 +479,30 @@ var CitiesList = ReFrame.component({}, function (props, query, bus) {
     return (
         React.createElement("div", null, 
             "Cities in: ", selectedCountry ? selectedCountry.get('name') : '-----', 
-            React.createElement("ul", null, 
-                cities.map(function (city) {
-                    return (
-                        React.createElement("li", {key: city.get('id')}, 
-                            React.createElement("a", {href: true, 
-                               className: city.equals(selectedCity) ? "active" : "inactive", 
-                               onClick: function (e) { bus.put(['select-city', city]); e.preventDefault(); }}, 
-                                city.get('name')
-                            )
-                        )
-                    );
-                })
-            )
+            React.createElement(ItemsList, {items: cities, 
+                       selectedItem: selectedCity, 
+                       onSelect: function (city) { bus.put(['select-city', city]); }})
         )
     )
 });
+
+var ItemsList = function (props) {
+    return (
+        React.createElement("ul", null, 
+            props.items.map(function (i) {
+                return (
+                    React.createElement("li", {key: i.get('id')}, 
+                        React.createElement("a", {href: true, 
+                           className: i.equals(props.selectedItem) ? "active" : "inactive", 
+                           onClick: function (e) {props.onSelect(i); e.preventDefault(); }}, 
+                            i.get('name')
+                        )
+                    )
+                );
+            })
+        )
+    );
+};
 
 var CityDescription = ReFrame.component({}, function (props, query, bus) {
     var selected = query(['selected']);
@@ -641,12 +629,33 @@ var model = I.fromJS({
             {id: 'australia', continent: 'australia', name: 'Australia'}
         ],
         cities: [
-            {id: 'wroclaw', country: 'poland', 'name': 'Wrocław'},
-            {id: 'warsaw', country: 'poland', 'name': 'Warsaw'},
-            {id: 'berlin', country: 'germany', 'name': 'Berlin'},
-            {id: 'frankfurt', country: 'germany', 'name': 'Frankfurt'},
-            {id: 'paris', country: 'france', 'name': 'Paris'},
-            {id: 'cairo', country: 'egypt', 'name': 'Cairo'}
+            {id: 'wroclaw', country: 'poland', name: 'Wrocław'},
+            {id: 'warsaw', country: 'poland', name: 'Warsaw'},
+            {id: 'berlin', country: 'germany', name: 'Berlin'},
+            {id: 'frankfurt', country: 'germany', name: 'Frankfurt'},
+            {id: 'paris', country: 'france', name: 'Paris'},
+            {id: 'abuja', country: 'nigeria', name: 'Abuja'},
+            {id: 'tunis', country: 'tunisia', name: 'Tunis'},
+            {id: 'cairo', country: 'egypt', name: 'Cairo'},
+            {id: 'thebes', country: 'egypt', name: 'Thebes'},
+            {id: 'mumbai', country: 'india', name: 'Mumbai'},
+            {id: 'beijing', country: 'china', name: 'Beijing'},
+            {id: 'quito', country: 'ecuador', name: 'Quito'},
+            {id: 'guayaquil', country: 'ecuador', name: 'Guayaquil'},
+            {id: 'rio-de-janeiro', country: 'brazil', name: 'Rio de Janeiro'},
+            {id: 'brasilia', country: 'brazil', name: 'Brasilia'},
+            {id: 'buenos-aires', country: 'argentina', name: 'Buenos Aires'},
+            {id: 'santiago-de-chile', country: 'chile', name: 'Santiago de Chile'},
+            {id: 'new-york', country: 'usa', name: 'New York'},
+            {id: 'chicago', country: 'usa', name: 'Chicago'},
+            {id: 'los-angeles', country: 'usa', name: 'Los Angeles'},
+            {id: 'seattle', country: 'usa', name: 'Seattle'},
+            {id: 'denver', country: 'usa', name: 'Denver'},
+            {id: 'toronto', country: 'canada', name: 'Toronto'},
+            {id: 'ottawa', country: 'canada', name: 'Ottawa'},
+            {id: 'vancouver', country: 'canada', name: 'Vancouver'},
+            {id: 'sydney', country: 'australia', name: 'Sydney'},
+            {id: 'canberra', country: 'australia', name: 'Canberra'}
         ]
     },
     ui: {
