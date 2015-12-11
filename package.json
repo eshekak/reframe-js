@@ -7,7 +7,9 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive test",
     "babel": "./node_modules/.bin/babel lib --out-dir dist",
-    "bundle-examples": "./node_modules/.bin/browserify example/src/js/main.jsx -t reactify -o example/dist/js/main.js",
+    "bundle-grids": "./node_modules/.bin/browserify example/src/js/grids.jsx -t reactify -o example/dist/js/grids.js",
+    "bundle-cities": "./node_modules/.bin/browserify example/src/js/cities.jsx -t reactify -o example/dist/js/cities.js",
+    "bundle-examples": "npm run bundle-cities && npm run bundle-grids",
     "build-all": "npm run babel && npm run bundle-examples"
   },
   "author": "Karol Majta <karol.majta@sigmapoint.pl>, Karol Manijak <karol.manijak@sigmapoint.pl>",
