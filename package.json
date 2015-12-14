@@ -10,7 +10,8 @@
     "bundle-grids": "./node_modules/.bin/browserify example/src/js/grids.jsx -t reactify -o example/dist/js/grids.js",
     "bundle-cities": "./node_modules/.bin/browserify example/src/js/cities.jsx -t reactify -o example/dist/js/cities.js",
     "bundle-examples": "npm run bundle-cities && npm run bundle-grids",
-    "build-all": "npm run babel && npm run bundle-examples"
+    "bundle-browser": "./node_modules/.bin/browserify dist/browser.js -o browser/index.js",
+    "build-all": "npm run babel && npm run bundle-browser && npm run bundle-examples"
   },
   "author": "Karol Majta <karol.majta@sigmapoint.pl>, Karol Manijak <karol.manijak@sigmapoint.pl>",
   "license": "ISC",
