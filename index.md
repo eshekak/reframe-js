@@ -179,3 +179,11 @@ a dynamic color palette.
 > This could be (partially) fixed using envify (if you feel like it, please do!)
 > but some dependencies (js-csp) do not have browser builds, so it would have
 > to be bundled anyways. Summing up: **use browserify**.
+
+## Where to go from here?
+
+While I do my best to provide further docs, this is still work in progress.
+There are some working examples in the
+[example](https://github.com/karolmajta/reframe-js/tree/master/example) directory
+in the repo. Feel free to check them out. They work out of the box after cloning
+the repository (just open the files in your browser).
