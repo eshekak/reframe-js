@@ -1,0 +1,27 @@
+{
+  "name": "reframe-js.karolmajta.github.io",
+  "version": "1.0.0",
+  "description": "http://karolmajta.github.io/reframe-js/",
+  "main": "index.js",
+  "dependencies": {
+    "reactify": "^1.1.1",
+    "uglifyjs": "^2.4.10",
+    "reframe-js": "git+https://github.com/karolmajta/reframe-js.git"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build-grids": "./node_modules/.bin/browserify src/examples/js/grids.jsx -t reactify -o js/examples/grids.js",
+    "uglify-grids": "cat js/examples/grids.js | ./node_modules/.bin/uglifyjs -c -m > js/examples/grids.min.js",
+    "build-all": "npm run build-grids && npm run uglify-grids 2>/dev/null"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karolmajta/reframe-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karolmajta/reframe-js/issues"
+  },
+  "homepage": "https://github.com/karolmajta/reframe-js#readme"
+}
