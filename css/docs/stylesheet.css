@@ -1,3 +1,7 @@
 body {
   padding-top: 70px;
 }
+
+a.navbar-brand {
+  padding-top: 5px;
+}

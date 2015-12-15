@@ -1,6 +1,7 @@
 ---
 layout: doc
 ---
-# docs index
 
-No elo!
+## Table of contents
+
+### [1. Quickstart code walkthrough](quickstart-code-walkthrough.html)
