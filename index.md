@@ -182,7 +182,11 @@ a dynamic color palette.
 
 ## Where to go from here?
 
-While I do my best to provide further docs, this is still work in progress.
+While I do my best to provide documentation, this is still work in progress.
+
+Please check out the [Quickstart code walkthrough](docs/quickstart-code-walkthrough.html)
+in the [docs](docs/).
+
 There are some working examples in the
 [example](https://github.com/karolmajta/reframe-js/tree/master/example) directory
 in the repo. Feel free to check them out. They work out of the box after cloning
