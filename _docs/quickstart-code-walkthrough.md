@@ -223,4 +223,171 @@ While components are "static" things (hence, they're created with static method
 `ReFrame.component`) queries are bound to a particular instance of `Reframe` and
 therefore are created using instance methods.
 
-*[TO BE CONTINUED... I HAD TO STOP AT THIS POINT, SORRY...]*
+To declare a query you should use `registerQuery`:
+
+    reframe.registerQuery('selected-color', function () {
+        return [
+            ['*db*'],
+            function (db) {
+                return Immutable.Map({value: db.getIn(['ui', 'selectedColor'])});
+            }
+        ];
+    });
+
+It takes query name as first argument, and variadic function as second one.
+It should return an array. This array's *init*  (all elements except last)
+represent this querie's dependencies and should consist of definitions of queries
+that the defined one depends on. `['*db*']` is a special "query" that denotes
+whole database. Please bear in mind that queries that declare `['*db*']` as their
+dependency *will get recomputed everytime anything in the database changes*
+(even if it's not affecting the query result).
+
+Last element of the returned list is another variadic function (so called
+transformation function). It takes as many arguments, as many dependencies
+the query declared. In the example above, since we declared one dependency,
+we must accept one argument - the *db* itself. The purpose of transformation
+function is to return proper result of the query based on given arguments.
+**Keep in mind, that transformation function must return `Immutable.List` or
+`Immutable.Map`**. Discussed transformation function for `selected-color`
+query returns a map with single key - *value* that contains the selected
+color.
+
+    reframe.registerQuery('palette-size', function () {
+        return [
+            ['*db*'],
+            function (db) {
+                return Immutable.Map({value: db.getIn(['ui', 'paletteSize'])});
+            }
+        ];
+    });
+
+    reframe.registerQuery('available-colors', function () {
+        return [
+            ['*db*'],
+            function (db) {
+                return db.getIn(['data', 'availableColors']);
+            }
+        ];
+    });
+
+`palette-size` query and `available-colors` are not really diffferent from
+the previous one, so we will focus on `palette` query:
+ 
+    reframe.registerQuery('palette', function (size) {
+         return [
+             ['selected-color'],
+             ['available-colors'],
+             function (selectedColor, availableColors) {
+                 var lookupKey = selectedColor.get('value');
+                 var baseColor = availableColors.get(lookupKey);
+                 return Immutable.List(Immutable.Range(0, size).map(function (n) {
+                     return baseColor.map(function (c) { return Math.floor(c*(n/size)); });
+                 }));
+             }
+         ];
+     });
+
+It's a so-called parametrized query (it takes arguments), and therefore
+inside components' render function is used like this:
+
+    query(['palette', 15])
+
+Function we passed to `registerQuery` will then get applied with
+tail of the `['palette', 15]` list (all elements excluding first). This
+argument can then be used inside both dependency declarations and transformation
+function to modify the final result of query.
+
+Please note how we didn't use `['*db*']` in dependency list. It means, that
+`palette` will only recompute when either `['selected-color']` or `['available-colors']`
+query result changes.
+
+If you're a cautious reader you could point out that (since we already have
+`palette-size` query declared) `palette` could be rewritten like:
+
+    reframe.registerQuery('palette', function () {
+         return [
+             ['selected-color'],
+             ['available-colors'],
+             ['palette-size']
+             function (selectedColor, availableColors, size) {
+                 var lookupKey = selectedColor.get('value');
+                 var baseColor = availableColors.get(lookupKey);
+                 return Immutable.List(Immutable.Range(0, size).map(function (n) {
+                     return baseColor.map(function (c) { return Math.floor(c*(n/size)); });
+                 }));
+             }
+         ];
+     });
+
+It's true, and it's a valid point, but I chose to show you how to parametrize
+queries. Both parametrized and non-parametrized queries are fine, and it
+takes some time to figure when to use which.
+
+
+### Reframe.js actions
+
+Components and queries are enough to render the application initial state, but
+we want to put some life to our app! This is what actions are for.
+
+Actions are responsible for modifying the database state. However, they do it
+in a pretty interesting way - they are pure functions. Since our database is
+backed by immutable data structure, it cannot be modified in place. Instead,
+an action receives db as arguments and is obliged to return new db, that will
+represent app state after the action.
+
+Let's have a look at how this works in practice:
+
+    reframe.registerHandler('color-selected', function (db, e, put) {
+        var colorName = e[1];
+        return db.setIn(['ui', 'selectedColor'], colorName);
+    });
+
+First argument - `db` represents is database value before the action
+kicked in.
+
+Second argument - `e` is the same list that was given to
+`bus.put(['event-name', arg1, arg2, ...])`. In case of selected color
+we were calling `bus.put(['color-selected', e.target.value])`, so indeed
+`e[1]` will be a string representing color selected in the dropdown.
+Based on that we return a new database value.
+
+Third argument is "put function". It's actually the same thing as
+`bus.put` inside a handler. It can be used to schedule another action
+from within an action. You will see how it works in other examples.
+
+The second handler, `resize-palette` works in the same vein.
+
+### Running it
+
+All we did until now, was defining our system. We created a set of rules
+for rendering data, querying data, and reacting to events. However, rules
+are just rules - they do nothing on their own, until someone puts things
+in motion:
+
+    reframe.render(model, App, {}, document.getElementById('app-container'));
+
+This call, taking initial database state, root component, props to be passed
+to root component, and element where the component should be rendered
+runs the actual loop (backed by [js-csp(https://github.com/ubolonton/js-csp)])
+that will keep the application running.
+
+### Summing things up
+
+This brief intro should be enough for you to build simple Reframe.js
+applications. Things to remember:
+
+- components
+    - are really dumb
+    - focus on "what?", not "how?"
+    - only use what's passed as arguments to render function
+    
+- queries
+    - are cheap and fun to use
+    - can be parametrized
+    - only recompute if any of it's dependencies value changes
+
+- actions
+    - must return a new database state
+    - can schedule another action
+
+I hope you have fun trying this stuff out!
