@@ -368,7 +368,7 @@ in motion:
 
 This call, taking initial database state, root component, props to be passed
 to root component, and element where the component should be rendered
-runs the actual loop (backed by [js-csp(https://github.com/ubolonton/js-csp)])
+runs the actual loop (backed by [js-csp](https://github.com/ubolonton/js-csp)])
 that will keep the application running.
 
 ### Summing things up
