@@ -6,6 +6,8 @@ layout: doc
 
 This walkthrough is just a quick explanation of what and why happens in the
 quickstart example. It will help you get your feet wet with Reframe.js.
+You can see the quickstart example live at
+[karolmajta.github.io/reframe-js/examples/palette/](../examples/palette/)
 
 ### Reframe.js components
 

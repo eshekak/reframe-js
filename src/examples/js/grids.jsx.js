@@ -32,13 +32,13 @@ var Row = ReFrame.component({}, function (props, query, bus) {
     return (
         <table className="row">
             <tbody>
-                <tr>
-                    {props.row.map(function (v, idx) {
-                        return <td key={idx}
-                                   className={v ? 'active' : 'inactive'}
-                                   onMouseEnter={function () { bus.put(['toggle', idx]); }}></td>;
-                    })}
-                </tr>
+            <tr>
+                {props.row.map(function (v, idx) {
+                    return <td key={idx}
+                               className={v ? 'active' : 'inactive'}
+                               onMouseEnter={function () { bus.put(['toggle', idx]); }}></td>;
+                })}
+            </tr>
             </tbody>
         </table>
     );
@@ -50,16 +50,16 @@ var Grid = ReFrame.component({}, function (props, query, bus) {
         <div className="cartesian-container">
             <table className="cartesian">
                 <tbody>
-                    {product.map(function (row, idx) {
-                        return (
-                            <tr key={idx}>
-                                {row.map(function (v, idx) {
-                                    return <td key={idx}
-                                               className={v ? 'active' : 'inactive'}></td>;
-                                })}
-                            </tr>
-                        );
-                    })}
+                {product.map(function (row, idx) {
+                    return (
+                        <tr key={idx}>
+                            {row.map(function (v, idx) {
+                                return <td key={idx}
+                                           className={v ? 'active' : 'inactive'}></td>;
+                            })}
+                        </tr>
+                    );
+                })}
                 </tbody>
             </table>
         </div>
@@ -100,19 +100,18 @@ reframe.registerQuery('row', function () {
 });
 
 reframe.registerQuery('grid-count', function () {
-   return [
-       ['*db*'],
-       function (db) {
-           return I.Map({count: db.get('gridCount')});
-       }
-   ];
+    return [
+        ['*db*'],
+        function (db) {
+            return I.Map({count: db.get('gridCount')});
+        }
+    ];
 });
 
 reframe.registerQuery('row-product', function () {
     return [
         ['row'],
         function (row) {
-            console.log('recalculating cartesian product.');
             var result = [];
             row.forEach(function (y) {
                 var singleRow = [];
@@ -131,4 +130,4 @@ var model = I.fromJS({
     row: [false, false, false, false, false, false, false, false, false]
 });
 
-reframe.render(model, App, {}, document.getElementById('page'));
+reframe.render(model, App, {}, document.getElementById('app-container'));

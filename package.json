@@ -4,15 +4,20 @@
   "description": "http://karolmajta.github.io/reframe-js/",
   "main": "index.js",
   "dependencies": {
+    "lodash": "^3.10.1",
     "reactify": "^1.1.1",
-    "uglifyjs": "^2.4.10",
-    "reframe-js": "git+https://github.com/karolmajta/reframe-js.git"
+    "reframe-js": "git+https://github.com/karolmajta/reframe-js.git",
+    "uglifyjs": "^2.4.10"
   },
   "devDependencies": {},
   "scripts": {
-    "build-grids": "./node_modules/.bin/browserify src/examples/js/grids.jsx -t reactify -o js/examples/grids.js",
-    "uglify-grids": "cat js/examples/grids.js | ./node_modules/.bin/uglifyjs -c -m > js/examples/grids.min.js",
-    "build-all": "npm run build-grids && npm run uglify-grids 2>/dev/null"
+    "build-palette": "./node_modules/.bin/browserify src/examples/js/palette.jsx -t reactify -o examples/palette/main.js",
+    "uglify-palette": "cat examples/palette/main.js | ./node_modules/.bin/uglifyjs -c -m > examples/palette/main.min.js",
+    "build-grids": "./node_modules/.bin/browserify src/examples/js/grids.jsx -t reactify -o examples/grids/main.js",
+    "uglify-grids": "cat examples/grids/main.js | ./node_modules/.bin/uglifyjs -c -m > examples/grids/main.min.js",
+    "build-cities": "./node_modules/.bin/browserify src/examples/js/cities.jsx -t reactify -o examples/cities/main.js",
+    "uglify-cities": "cat examples/cities/main.js | ./node_modules/.bin/uglifyjs -c -m > examples/cities/main.min.js",
+    "build-all": "npm run build-grids && npm run uglify-grids 2>/dev/null && npm run build-palette && npm run uglify-palette 2>/dev/null && npm run build-cities && npm run uglify-cities 2>/dev/null"
   },
   "repository": {
     "type": "git",

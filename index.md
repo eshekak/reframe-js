@@ -27,6 +27,10 @@ After installing Reframe.js from npm just put this `index.html` in your
 project root. It will give you a bare minimum Reframe.js application showing
 a dynamic color palette.
 
+You can see it live at
+[karolmajta.github.io/reframe-js/examples/palette/](examples/palette/)
+
+    {% raw %}
     <!DOCTYPE html>
     <html lang="en-us">
       <head>
@@ -171,6 +175,7 @@ a dynamic color palette.
         reframe.render(model, App, {}, document.getElementById('app-container'));
       </script>
     </html>
+    {% endraw %}
 
 > Please note, that while `node_modules/reframe-js/browser/index.js` exists
 > for demonstration purposes. It is not intended for production. Reframe.js
@@ -191,3 +196,13 @@ There are some working examples in the
 [example](https://github.com/karolmajta/reframe-js/tree/master/example) directory
 in the repo. Feel free to check them out. They work out of the box after cloning
 the repository (just open the files in your browser).
+
+You can also check them running live at this site:
+
+- [grids](examples/grids/) is a basic example of how queries are effectively
+  singletons, and can be safely/cheaply used multiple times in many components.
+  [(source on github)](https://github.com/karolmajta/reframe-js/blob/master/example/src/js/grids.jsx)
+  
+- [cities](examples/cities) shows how to use parametrized queryes and how you
+  can keep your data normalized (if you wish).
+  [(source on github)](https://github.com/karolmajta/reframe-js/blob/master/example/src/js/cities.jsx)
