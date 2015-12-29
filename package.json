@@ -19,7 +19,7 @@
     "babel-polyfill": "^6.0.16",
     "immstruct": "^2.0.0",
     "immutable": "^3.7.5",
-    "js-csp": "git+https://github.com/Sigmapoint/js-csp.git",
+    "js-csp": "git+https://github.com/karolmajta/js-csp.git",
     "lodash": "^3.10.1",
     "react": "^0.14.2",
     "react-dom": "^0.14.2"
